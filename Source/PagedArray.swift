@@ -53,13 +53,13 @@ public struct PagedArray<T> {
     
     /// The last valid page index
     public var lastPage: PageIndex {
-        if count == 0 {
-            return 0
-        } else if count%pageSize == 0 {
-            return count/pageSize+startPage-1
+        
+        if (count % pageSize) == 0 {
+            return (count/pageSize) - 1
         } else {
-            return count/pageSize+startPage
+            return (count/pageSize) + 1
         }
+        
     }
     
     /// All elements currently set, in order
@@ -165,12 +165,15 @@ extension PagedArray : BidirectionalCollection {
         get {
             let pageIndex = page(for: position)
             
-            if let page = elements[pageIndex] {
-                return page[position%pageSize]
+            let elementIndex = position%pageSize
+            
+            if let page = elements[pageIndex], elementIndex < page.count {
+                return page[elementIndex]
             } else {
                 // Return nil for all pages that haven't been set yet
                 return nil
             }
+
         }
         
         set(newValue) {
