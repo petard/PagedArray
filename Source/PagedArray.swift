@@ -167,6 +167,8 @@ extension PagedArray : BidirectionalCollection {
             
             let elementIndex = position%pageSize
             
+            print("subscript", pageIndex, position%pageSize, elementIndex, elements[pageIndex])
+
             if let page = elements[pageIndex], elementIndex < page.count {
                 return page[elementIndex]
             } else {
